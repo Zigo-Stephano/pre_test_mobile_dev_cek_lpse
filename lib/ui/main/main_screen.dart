@@ -27,9 +27,24 @@ class MainScreen extends GetView<MainController> {
         appBar: appbar(),
         drawer: drawer(),
         body: Center(
-          child: Text(
-            Strings.selamatDatang,
-            style: textH7(),
+          child: Image.network(
+            controller.user.profilePicture.toString(),
+            fit: BoxFit.fill,
+            loadingBuilder: (
+              BuildContext context,
+              Widget child,
+              ImageChunkEvent? loadingProgress,
+            ) {
+              if (loadingProgress == null) return child;
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              );
+            },
           ),
         ),
       ),
